@@ -18,7 +18,7 @@ namespace Valheim.EnhancedProgressTracker.Multiplayer
 			if (ZNet.instance.IsServer())
 			{
 				Log.LogDebug("Registering server RPC for sending configs on request from client.");
-				peer.m_rpc.Register(nameof(RPC_RquestConfigsEnhancedProgressTracker), new ZRpc.RpcMethod.Method(RPC_RquestConfigsEnhancedProgressTracker));
+				peer.m_rpc.Register(nameof(RPC_RequestConfigsEnhancedProgressTracker), new ZRpc.RpcMethod.Method(RPC_RequestConfigsEnhancedProgressTracker));
 			}
 			else
 			{
@@ -26,11 +26,11 @@ namespace Valheim.EnhancedProgressTracker.Multiplayer
 				peer.m_rpc.Register<ZPackage>(nameof(RPC_ReceiveConfigsEnhancedProgressTracker), new Action<ZRpc, ZPackage>(RPC_ReceiveConfigsEnhancedProgressTracker));
 
 				Log.LogDebug("Requesting configs from server.");
-				peer.m_rpc.Invoke(nameof(RPC_RquestConfigsEnhancedProgressTracker));
+				peer.m_rpc.Invoke(nameof(RPC_RequestConfigsEnhancedProgressTracker));
 			}
 		}
 
-		private static void RPC_RquestConfigsEnhancedProgressTracker(ZRpc rpc)
+		private static void RPC_RequestConfigsEnhancedProgressTracker(ZRpc rpc)
 		{
 			try
 			{

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 namespace Valheim.EnhancedProgressTracker.ConfigurationCore
 {
     [Serializable]
-    public abstract class ConfigurationSection : IHaveEntries
+    internal abstract class ConfigurationSection : IHaveEntries
     {
         public string SectionName { get; set; } = null;
 

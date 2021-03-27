@@ -2,7 +2,7 @@
 
 namespace Valheim.EnhancedProgressTracker.ConfigurationCore
 {
-    public interface IHaveEntries
+    internal interface IHaveEntries
     {
         Dictionary<string, IConfigurationEntry> Entries { get; set; }
     }

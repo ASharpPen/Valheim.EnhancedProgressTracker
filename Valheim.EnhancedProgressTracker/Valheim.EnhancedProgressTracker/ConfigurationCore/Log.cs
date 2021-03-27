@@ -5,11 +5,9 @@ using Valheim.EnhancedProgressTracker.ConfigurationTypes;
 
 namespace Valheim.EnhancedProgressTracker.ConfigurationCore
 {
-    public class Log
+    internal static class Log
     {
         internal static ManualLogSource Logger;
-
-        private const string Prefix = "[Spawn That!]: ";
 
         public static void LogDebug(string message)
         {
@@ -31,6 +29,6 @@ namespace Valheim.EnhancedProgressTracker.ConfigurationCore
 
         public static void LogWarning(string message) => Logger.LogWarning($"{message}");
 
-        public static void LogError(string message, Exception e = null) => Logger.LogError($"{Prefix}{message}; {e?.Message ?? ""}");
+        public static void LogError(string message, Exception e = null) => Logger.LogError($"{e?.Message ?? ""}");
     }
 }

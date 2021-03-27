@@ -8,7 +8,7 @@ namespace Valheim.EnhancedProgressTracker.Tribe
     {
         private static Dictionary<string, string> PlayerTribeTable;
 
-        public static void Reset()
+        internal static void Reset()
         {
             PlayerTribeTable = null;
         }

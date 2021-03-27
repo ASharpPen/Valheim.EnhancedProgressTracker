@@ -4,7 +4,7 @@ using System.Collections.Generic;
 namespace Valheim.EnhancedProgressTracker.ConfigurationCore
 {
     [Serializable]
-    public class ConfigurationGroup<TSection> : IHaveEntries where TSection : ConfigurationSection
+    internal class ConfigurationGroup<TSection> : IHaveEntries where TSection : ConfigurationSection
     {
         public string GroupName { get; set; } = null;
 

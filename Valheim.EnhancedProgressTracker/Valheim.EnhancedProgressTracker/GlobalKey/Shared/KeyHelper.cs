@@ -1,13 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Valheim.EnhancedProgressTracker.ConfigurationCore;
-using Valheim.EnhancedProgressTracker.ConfigurationTypes;
-using Valheim.EnhancedProgressTracker.Tribe;
+﻿using Valheim.EnhancedProgressTracker.Tribe;
 
-namespace Valheim.EnhancedProgressTracker.GlobalKey
+namespace Valheim.EnhancedProgressTracker.GlobalKey.Shared
 {
     public static class KeyHelper
     {
@@ -25,7 +18,6 @@ namespace Valheim.EnhancedProgressTracker.GlobalKey
         {
             return $"{key}:Player:{playerName}";
         }
-
 
         public static string GetTribeKey(Player player, string key)
         {

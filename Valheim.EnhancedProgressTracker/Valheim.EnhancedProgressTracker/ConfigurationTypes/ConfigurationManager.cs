@@ -7,7 +7,7 @@ using Valheim.EnhancedProgressTracker.ConfigurationCore;
 
 namespace Valheim.EnhancedProgressTracker.ConfigurationTypes
 {
-    public static class ConfigurationManager
+    internal static class ConfigurationManager
     {
         internal const string GeneralConfigFile = "enhanced_progress_tracker.cfg";
 

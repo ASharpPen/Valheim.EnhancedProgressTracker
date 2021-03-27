@@ -69,13 +69,15 @@
     <Compile Include="ConfigurationTypes\GeneralConfig.cs" />
     <Compile Include="ConfigurationTypes\TribeConfiguration.cs" />
     <Compile Include="EnhancedProgressTrackerPlugin.cs" />
+    <Compile Include="GlobalKey\EnhancedGlobalKey.cs" />
     <Compile Include="GlobalKey\GlobalKeyEnhancedPatch.cs" />
-    <Compile Include="GlobalKey\KeyHelper.cs" />
+    <Compile Include="GlobalKey\Shared\KeyHelper.cs" />
     <Compile Include="GlobalKey\KeyMode.cs" />
     <Compile Include="KillTracking\CreatureKillContributorPatch.cs" />
     <Compile Include="KillTracking\CreatureOnDeathPatch.cs" />
     <Compile Include="Multiplayer\ConfigMultiplayerPatch.cs" />
     <Compile Include="Multiplayer\ConfigurationPackage.cs" />
+    <Compile Include="GlobalKey\Shared\ZoneSystemExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Tribe\TribeHelper.cs" />
     <Compile Include="WorldStartPatch.cs" />

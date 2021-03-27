@@ -1,11 +1,11 @@
 ﻿using HarmonyLib;
 using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.Reflection;
 using UnityEngine;
 using Valheim.EnhancedProgressTracker.ConfigurationCore;
 using Valheim.EnhancedProgressTracker.ConfigurationTypes;
-using Valheim.EnhancedProgressTracker.GlobalKey;
+using Valheim.EnhancedProgressTracker.GlobalKey.Shared;
 using Valheim.EnhancedProgressTracker.Tribe;
 
 namespace Valheim.EnhancedProgressTracker.KillTracking
@@ -13,6 +13,8 @@ namespace Valheim.EnhancedProgressTracker.KillTracking
     [HarmonyPatch(typeof(Character))]
     public static class CreatureOnDeathPatch
     {
+        private static FieldInfo _globalVariables = AccessTools.Field(typeof(ZoneSystem), "m_globalKeys");
+
         [HarmonyPatch("OnDeath")]
         [HarmonyPrefix]
         private static void SetKeysOnDeath(Character __instance)
@@ -29,11 +31,19 @@ namespace Valheim.EnhancedProgressTracker.KillTracking
                 string cleanedName = name.Split('(')[0].Trim().ToUpperInvariant();
                 var newKey = $"KILLED_{cleanedName}";
 
-                ZoneSystem.instance.SetGlobalKey(newKey);
+                var existingKeys = _globalVariables.GetValue(ZoneSystem.instance) as HashSet<string> ?? new HashSet<string>(0);
 
 #if DEBUG
-                Log.LogDebug($"Set global key {newKey}.");
+                Log.LogDebug($"Found {existingKeys.Count} existing keys.");
 #endif
+
+                SetKey(newKey, existingKeys);
+
+                //Check early escape. No reason to start doing more costly operations, if we aren't going to add record any more advanced keys.
+                if(ConfigurationManager.GeneralConfig.RecordPlayerKeys.Value == false && ConfigurationManager.GeneralConfig.RecordTribeKeys.Value == false)
+                {
+                    return;
+                }
 
                 if(ConfigurationManager.GeneralConfig.TrackPlayersWithinDistance.Value > 0)
                 {
@@ -69,45 +79,52 @@ namespace Valheim.EnhancedProgressTracker.KillTracking
                     {
                         string playerName = player.m_name;
 
-                        //Set default key with player
-                        if (hasDefaultKey)
+                        if (ConfigurationManager.GeneralConfig.RecordPlayerKeys.Value)
                         {
-                            string defaultPlayerKey = KeyHelper.GetPlayerKey(playerName, defaultKey);
-                            ZoneSystem.instance.SetGlobalKey(defaultPlayerKey);
-#if DEBUG
-                            Log.LogDebug($"Set default global player key {defaultPlayerKey}.");
-#endif
-                        }
 
-                        string playerKey = KeyHelper.GetPlayerKey(playerName, newKey);
-                        ZoneSystem.instance.SetGlobalKey(playerKey);
-#if DEBUG
-                        Log.LogDebug($"Set global player key {playerKey}.");
-#endif
-
-                        if (TribeHelper.TryGetPlayerTribe(playerName, out string tribe))
-                        {
-                            //Set default key with tribe
-                            if(hasDefaultKey)
+                            //Set default key with player
+                            if (hasDefaultKey)
                             {
-                                string defaultTribeKey = KeyHelper.GetTribeKey(playerName, defaultKey);
-                                ZoneSystem.instance.SetGlobalKey(defaultTribeKey);
-#if DEBUG
-                                Log.LogDebug($"Set default global tribe key {defaultTribeKey}.");
-#endif
+                                string defaultPlayerKey = KeyHelper.GetPlayerKey(playerName, defaultKey);
+
+                                SetKey(defaultPlayerKey, existingKeys);
                             }
 
-                            string tribeKey = KeyHelper.GetTribeKey(playerName, newKey);
-                            ZoneSystem.instance.SetGlobalKey(tribeKey);
-#if DEBUG
-                            Log.LogDebug($"Set global tribe key {tribeKey}.");
-#endif
+                            string playerKey = KeyHelper.GetPlayerKey(playerName, newKey);
+                            SetKey(playerKey, existingKeys);
+                        }
+
+                        if (ConfigurationManager.GeneralConfig.RecordTribeKeys.Value)
+                        {
+                            if (TribeHelper.TryGetPlayerTribe(playerName, out string tribe))
+                            {
+                                //Set default key with tribe
+                                if (hasDefaultKey)
+                                {
+                                    string defaultTribeKey = KeyHelper.GetTribeKey(playerName, defaultKey);
+                                    SetKey(defaultTribeKey, existingKeys);
+                                }
+
+                                string tribeKey = KeyHelper.GetTribeKey(playerName, newKey);
+                                SetKey(tribeKey, existingKeys);
+                            }
                         }
                     }
                 }
             }
             catch (Exception e) 
-            { 
+            {
+                Log.LogError("Error while trying to add enhanced keys.", e);
+            }
+        }
+
+        private static void SetKey(string newKey, HashSet<string> existingKeys)
+        {
+            if (!existingKeys.Contains(newKey))
+            {
+                Log.LogDebug("Setting global key: " + newKey);
+
+                ZoneSystem.instance.SetGlobalKey(newKey);
             }
         }
     }

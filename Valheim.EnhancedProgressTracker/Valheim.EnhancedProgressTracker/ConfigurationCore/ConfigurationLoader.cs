@@ -7,7 +7,7 @@ using System.Text.RegularExpressions;
 
 namespace Valheim.EnhancedProgressTracker.ConfigurationCore
 {
-    public static class ConfigurationLoader
+    internal static class ConfigurationLoader
     {
         private static readonly Regex SectionHeader = new Regex(@"(?<=[[]).+(?=[]])", RegexOptions.Compiled);
         private static readonly Regex SectionSanitizer = new Regex(@"[^\p{L}\d.\[\]_\s]");

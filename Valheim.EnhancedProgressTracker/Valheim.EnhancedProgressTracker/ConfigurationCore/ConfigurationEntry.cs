@@ -4,13 +4,13 @@ using System.Runtime.Serialization;
 
 namespace Valheim.EnhancedProgressTracker.ConfigurationCore
 {
-    public interface IConfigurationEntry
+    internal interface IConfigurationEntry
     {
         void Bind(ConfigFile config, string section, string key);
     }
 
     [Serializable]
-    public class ConfigurationEntry<TIn> : IConfigurationEntry
+    internal class ConfigurationEntry<TIn> : IConfigurationEntry
     {
         public TIn DefaultValue;
 

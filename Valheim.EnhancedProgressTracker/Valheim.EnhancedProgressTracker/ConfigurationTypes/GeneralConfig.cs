@@ -5,7 +5,7 @@ using Valheim.EnhancedProgressTracker.ConfigurationCore;
 namespace Valheim.EnhancedProgressTracker.ConfigurationTypes
 {
     [Serializable]
-    public class GeneralConfig
+    internal class GeneralConfig
     {
         [NonSerialized]
         private ConfigFile Config;
@@ -20,7 +20,7 @@ namespace Valheim.EnhancedProgressTracker.ConfigurationTypes
 
         #region General
 
-        public ConfigurationEntry<bool> StopTouchingMyConfigs = new ConfigurationEntry<bool>(false, "Disables automatic updating and saving of drop table configurations.\nThis means no helpers will be added, but.. allows you to keep things compact.");
+        public ConfigurationEntry<bool> StopTouchingMyConfigs = new ConfigurationEntry<bool>(false, "Disables automatic updating and saving of configurations.\nThis means no descriptions or missing fields will be added, but.. allows you to keep things compact.");
 
         public ConfigurationEntry<string> KeyMode = new ConfigurationEntry<string>("Default", "Choose key tracking mode. This decides how progress is tracked. Default, Player, Tribe.");
 
@@ -35,6 +35,13 @@ namespace Valheim.EnhancedProgressTracker.ConfigurationTypes
 
         #endregion
 
+        #region Keys
+
+        public ConfigurationEntry<bool> RecordPlayerKeys = new ConfigurationEntry<bool>(true, "Enables player key recording. Meaning each player will get a global key recorded, when a creature dies.");
+        public ConfigurationEntry<bool> RecordTribeKeys = new ConfigurationEntry<bool>(true, "Enables tribe key recording. Meaning each tribe will get a global key recorded, when a creature dies.");
+
+        #endregion
+
         public void Load(ConfigFile configFile)
         {
             Config = configFile;
@@ -46,6 +53,9 @@ namespace Valheim.EnhancedProgressTracker.ConfigurationTypes
 
             KeyMode.Bind(Config, "General", nameof(KeyMode));
             StopTouchingMyConfigs.Bind(Config, "General", nameof(StopTouchingMyConfigs));
+
+            RecordPlayerKeys.Bind(Config, "Keys", nameof(RecordPlayerKeys));
+            RecordTribeKeys.Bind(Config, "Keys", nameof(RecordTribeKeys));
         }
     }
 }

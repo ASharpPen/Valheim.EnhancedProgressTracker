@@ -4,12 +4,12 @@ using Valheim.EnhancedProgressTracker.ConfigurationCore;
 namespace Valheim.EnhancedProgressTracker.ConfigurationTypes
 {
     [Serializable]
-    public class TribeConfiguration : ConfigurationGroup<TribeMember>
+    internal class TribeConfiguration : ConfigurationGroup<TribeMember>
     {
     }
 
     [Serializable]
-    public class TribeMember : ConfigurationSection
+    internal class TribeMember : ConfigurationSection
     {
         private int? index = null;
 

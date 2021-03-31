@@ -1,6 +1,6 @@
 {
   "name": "Enhanced_Progress_Tracker",
-  "version_number": "1.0.0",
+  "version_number": "1.0.1",
   "website_url": "https://github.com/ASharpPen/Valheim.EnhancedProgressTracker",
   "description": "Adds additional, consistent, global keys. Enables seamless player or tribe based global key checks.",
   "dependencies": [

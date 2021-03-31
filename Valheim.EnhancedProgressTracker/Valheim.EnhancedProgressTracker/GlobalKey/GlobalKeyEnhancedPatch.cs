@@ -14,6 +14,11 @@ namespace Valheim.EnhancedProgressTracker.GlobalKey
         {
             var player = Player.m_localPlayer;
 
+            if(player is null)
+            {
+                return;
+            }
+
             if (Enum.TryParse(ConfigurationManager.GeneralConfig.KeyMode.Value, out KeyMode keyMode))
             {
                 switch (keyMode)

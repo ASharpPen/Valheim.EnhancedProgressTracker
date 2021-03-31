@@ -29,6 +29,6 @@ namespace Valheim.EnhancedProgressTracker.ConfigurationCore
 
         public static void LogWarning(string message) => Logger.LogWarning($"{message}");
 
-        public static void LogError(string message, Exception e = null) => Logger.LogError($"{e?.Message ?? ""}");
+        public static void LogError(string message, Exception e = null) => Logger.LogError($"{message}. {e?.Message}");
     }
 }

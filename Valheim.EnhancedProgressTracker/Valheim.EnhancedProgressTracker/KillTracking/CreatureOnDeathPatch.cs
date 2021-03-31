@@ -17,14 +17,19 @@ namespace Valheim.EnhancedProgressTracker.KillTracking
 
         [HarmonyPatch("OnDeath")]
         [HarmonyPrefix]
-        private static void SetKeysOnDeath(Character __instance)
+        private static void SetKeysOnDeath(Character __instance, ZNetView ___m_nview)
         {
-            if(!__instance.IsOwner())
+            if(___m_nview is not null && !___m_nview.IsOwner())
             {
                 return;
             }
 
             string name = __instance.gameObject?.name;
+
+            if(string.IsNullOrWhiteSpace(__instance.gameObject?.name))
+            {
+                return;
+            }
 
             try
             {
@@ -40,7 +45,7 @@ namespace Valheim.EnhancedProgressTracker.KillTracking
                 SetKey(newKey, existingKeys);
 
                 //Check early escape. No reason to start doing more costly operations, if we aren't going to add record any more advanced keys.
-                if(ConfigurationManager.GeneralConfig.RecordPlayerKeys.Value == false && ConfigurationManager.GeneralConfig.RecordTribeKeys.Value == false)
+                if(ConfigurationManager.GeneralConfig?.RecordPlayerKeys?.Value == false && ConfigurationManager.GeneralConfig?.RecordTribeKeys?.Value == false)
                 {
                     return;
                 }
@@ -49,13 +54,23 @@ namespace Valheim.EnhancedProgressTracker.KillTracking
                 {
                     List<ZNet.PlayerInfo> players = ZNet.instance.GetPlayerList();
 
-                    var position = __instance.GetTransform().position;
+                    var position = __instance.transform.position;
 
                     List<ZNet.PlayerInfo> playersInDistance = new List<ZNet.PlayerInfo>(players.Count);
                     
                     foreach (var player in players)
                     {
-                        var playerPosition = ZDOMan.instance.GetZDO(player.m_characterID).GetPosition();
+                        var playerZDO = ZDOMan.instance.GetZDO(player.m_characterID);
+
+
+                        if(playerZDO is null)
+                        {
+                            Log.LogWarning("Unable to retrieve ZDO for player: " + player.m_name);
+                            continue;
+                        }
+
+                        var playerPosition = playerZDO.GetPosition();
+                        
 #if DEBUG
                         Log.LogDebug($"Player at '{playerPosition}'. Death at '{position}'");
 #endif
@@ -79,7 +94,7 @@ namespace Valheim.EnhancedProgressTracker.KillTracking
                     {
                         string playerName = player.m_name;
 
-                        if (ConfigurationManager.GeneralConfig.RecordPlayerKeys.Value)
+                        if (ConfigurationManager.GeneralConfig?.RecordPlayerKeys?.Value == true)
                         {
 
                             //Set default key with player

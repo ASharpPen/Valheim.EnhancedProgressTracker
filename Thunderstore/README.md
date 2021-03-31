@@ -97,6 +97,7 @@ RecordPlayerKeys = true
 
 ## Enables tribe key recording. Meaning each tribe will get a global key recorded, when a creature dies.
 RecordTribeKeys = true
+
 [KillTracking]
 
 ## If players are within the set distance on creature death, they will have their (or their tribe's) progress updated. If 0 or less, this setting is disabled.
@@ -115,5 +116,7 @@ Eg. ZoneSystem.instance.HasGlobalKey(Player.m_localPlayer, "defeated_bonemass");
 
 ## ChangeLog
 
-- v1.0.0
-  - Initial release
+v1.0.1 
+- Additional error descriptions and handling.
+v1.0.0 
+- Initial release

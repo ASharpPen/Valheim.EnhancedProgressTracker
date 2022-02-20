@@ -2,3 +2,5 @@
 obj/
 Thunderstore/*/*
 .vs/
+Libs
+Valheim.EnhancedProgressTracker/packages

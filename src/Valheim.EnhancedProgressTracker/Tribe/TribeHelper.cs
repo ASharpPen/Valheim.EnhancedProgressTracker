@@ -15,12 +15,12 @@ namespace Valheim.EnhancedProgressTracker.Tribe
 
         public static bool TryGetPlayerTribe(string playerName, out string tribeName)
         {
-            if(PlayerTribeTable == null)
+            if (PlayerTribeTable == null)
             {
                 InitializeTribeTable();
             }
 
-            if(TribeHelper.PlayerTribeTable.TryGetValue(playerName.Trim().ToUpperInvariant(), out string tribe))
+            if (TribeHelper.PlayerTribeTable.TryGetValue(playerName.Trim().ToUpperInvariant(), out string tribe))
             {
                 tribeName = tribe;
                 return true;

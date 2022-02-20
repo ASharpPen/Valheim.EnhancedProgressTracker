@@ -6,7 +6,7 @@ using Valheim.EnhancedProgressTracker.Tribe;
 namespace Valheim.EnhancedProgressTracker
 {
     [HarmonyPatch(typeof(FejdStartup), "OnWorldStart")]
-    public static class ResetConfigurations
+    internal static class ResetConfigurations
     {
         private static void Postfix()
         {
